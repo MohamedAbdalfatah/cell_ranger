@@ -2,13 +2,21 @@
 
 ## We have done:
 1- lims 
+
 2- fastq path
+
 3- metadata
+
 4- copy fastqs and create directory of gem_id
+
 5- create cell ranger job
+
 ## We need to do:
+
 1- Modify cellranger job to be multi and add config file
+
 2- create confi file manually or by script 
+
 3- understand the structure of the project 
 
 In this file I'm going to update the cellranger files for people dosn't have permession 
