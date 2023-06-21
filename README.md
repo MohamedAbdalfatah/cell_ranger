@@ -5,6 +5,7 @@ In this file I'm going to update the cellranger files for people dosn't have per
 ```{r}
 mkdir subproject
 mkdir subproject/jobs
+cd subproject
 ```
 **Step 1** LIMS information 
 ```{r}
@@ -16,14 +17,16 @@ nano projects/scripts/1-lims.sh
 
 # Get information for each library (flow cell, lane, sample id, etc.)
 # $1  needs to be the name of the project
-scripts/limsq.py -sp $1 | sed 's/;/\t/g' > "lims_info_"$1".txt"
+/home/groups/singlecell/mabdalfttah/projects/scripts/limsq.py -sp $1 | sed 's/;/\t/g' > "lims_info_"$1".txt"
 
 echo "Created LIMS information file: lims_info.txt"
 ```
 
 ```{r}
 chmod +x 1-lims.sh
-./projects/scripts/1-lims_info.sh subproject 
+./../scripts/1-lims.sh subproject
+# Copy the feature file
+cp ../cellranger_mapping/feature_reference.csv .
 ```
 
 **Step 2** Write fastq files 
@@ -97,9 +100,11 @@ fastq_df.to_csv("fastq_paths.tab".format(subproject), header = True, index = Fal
 ```
 
 ```{}
-python projects/scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
+python ../scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
 ```
 
+
+```{}
 **Step 3** Cretae metadata
 
 ```{}
@@ -257,5 +262,5 @@ else:
 ```
 
 ```{r}
-python projects/scripts/3-make_cellranger.py  --subproject DOLSORI_05 --fastq_paths projects/DOLSORI_05/fastq_paths.tab --metadata projects/DOLSORI_05/DOLSORI_05.csv --gem_id Plex6_GEX_1 --feat_ref projects/DOLSORI_05/feature_reference.csv
+python ../scripts/3-make_cellranger.py  --subproject DOLSORI_06 --fastq_paths fastq_paths.tab --metadata DOLSORI_06.csv --gem_id Plex5_CellPlex_1 --feat_ref feature_reference.csv
 ```
