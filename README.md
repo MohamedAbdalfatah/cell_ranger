@@ -13,9 +13,34 @@
 
 ## We need to do:
 
-1- Modify cellranger job to be multi and add config file
+1- Modify cellranger job to be multi and add config file:
+    a) cellranger multi comand 
+    b) Sample (gem_id)
+    c) config_file.csv
 
 2- create confi file manually or by script 
+Here all of what we need to put this:
+[gene-expression]
+reference,/scratch/groups/singlecell/data/reference/refdata-gex-GRCh38-2020-A (No changed need)
+cmo-set,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/data/CMO_reference.csv (File avilable in Laura chat but we need to change the path)
+expect-cells,30000 (No changed need)
+chemistry,SC3Pv3 (No changed need)
+no-secondary,true (No changed need)
+no-bam,false (No changed need)
+[libraries] (Change the path of the fastq files, we have directory for CMO and cDNA)
+fastq_id,fastqs,feature_types 
+Plex5_2_CMO,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/subprojects/DOLSORI_05_06/jobs/Plex5_2/fastq/CMO,Multiplexing Capture
+Plex5_2,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/subprojects/DOLSORI_05_06/jobs/Plex5_2/fastq/cDNA,Gene Expression
+
+[samples] (We need to write a script to generate this part, we can generate it from wetlab refernce )
+sample_id,cmo_ids
+1956028,CMO301
+1864260-181121,CMO302
+1853936,CMO303
+1864260-270521,CMO304
+VN00213,CMO305
+1893906,CMO307
+VN00264,CMO308
 
 3- understand the structure of the project 
 
