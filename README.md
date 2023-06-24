@@ -20,9 +20,13 @@
 
 2- create confi file manually or by script 
 Here all of what we need to put this:
+
 [gene-expression]
+
 reference,/scratch/groups/singlecell/data/reference/refdata-gex-GRCh38-2020-A (No changed need)
+
 cmo-set,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/data/CMO_reference.csv (File avilable in Laura chat but we need to change the path)
+
 expect-cells,30000 (No changed need)
 chemistry,SC3Pv3 (No changed need)
 no-secondary,true (No changed need)
