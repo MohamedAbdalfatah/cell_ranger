@@ -14,9 +14,9 @@
 ## We need to do:
 
 1- Modify cellranger job to be multi and add config file:
-    a) cellranger multi comand 
-    b) Sample (gem_id)
-    c) config_file.csv
+    a) cellranger multi comand (done) 
+    b) Sample (gem_id) done
+    c) config_file.csv (we need to add)
 
 2- create confi file manually or by script 
 Here all of what we need to put this:
