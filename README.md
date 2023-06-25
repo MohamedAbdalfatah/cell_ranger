@@ -21,7 +21,7 @@
     c) config_file.csv done
  
 
-2- create confi file manually or by script 
+2- create confi file manually or by script (solved, check cretate_config.py script)
 Here all of what we need to put this:
 
 [gene-expression]
