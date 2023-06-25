@@ -14,9 +14,12 @@
 ## We need to do:
 
 1- Modify cellranger job to be multi and add config file:
-    a) cellranger multi comand (done) 
+    a) cellranger multi comand done
+    
     b) Sample (gem_id) done
-    c) config_file.csv (we need to add)
+    
+    c) config_file.csv done
+ 
 
 2- create confi file manually or by script 
 Here all of what we need to put this:
@@ -49,6 +52,8 @@ VN00264,CMO308
 3- understand the structure of the project 
 
 In this file I'm going to update the cellranger files for people dosn't have permession 
+
+4- Check the fasstq in limas (Problem of no such file or directory)
 
 ```{r}
 mkdir subproject
@@ -333,7 +338,7 @@ make_cellranger_nh(gem_id, subproject_dir, fastq_dir_abs, 5000)
 ```
 
 ```{r}
-python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex5_1
+python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
 ```
 
 **STEP 5** Create config file
@@ -413,5 +418,5 @@ Run the script
 it takes the CMO information and the gem_id and save the csv file as config.csv in the job directory 
 
 ```{}
-python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex5_1
+python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
