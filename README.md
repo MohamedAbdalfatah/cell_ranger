@@ -99,14 +99,14 @@ sh /scratch/devel/pnieto/scripts/mo_copy.sh DOLSORI_05 /scratch_isilon/groups/si
 
 **Step 3** Generate fastq path 
 
-In this script we are get the 
-here there is some changes: 
+Perfect! since we have nowall FASTQs in **fastq_dir** now we will generate the FASTQ path pf the new directory for our subproject, we will use this path for next script to create symbolic link in jobs directory for each sample . Since we changed the structure of the path here there is some changes in the script, first we changed where is the fastqs and second we changed the structure of creationg the path, and that is it:
+ 
 1- fastq_path = "/scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir" 
-change the path from pridaction which we don't have permession to fastq_dir which is we have permession
+change the path from **production dir** which we don't have permession to **fastq_dir** which is we have permession
 2 - fastq_path_r1 = "{}/{}_{}_{}_1.fastq.gz".format(fastq_path, fc, lane, index)
     fastq_path_r2 = "{}/{}_{}_{}_2.fastq.gz".format(fastq_path, fc, lane, index)
 
-
+This is the script:
 ```{}
 #!/usr/bin/env python
 
@@ -163,10 +163,11 @@ read_l = (["R1"] * lims.shape[0]) + (["R2"] * lims.shape[0])
 fastq_dict = {"library_id":library_id_l, "fastq_path":fastq_path_l, "read":read_l, "pair_id":pair_id}
 fastq_df = pd.DataFrame(fastq_dict)
 
-
 fastq_df.to_csv("fastq_paths.tab".format(subproject), header = True, index = False, sep="\t")
 
 ```
+
+To run this script you need to pass the lims info from **STEP1** and the subproject
 
 ```{}
 python ../scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
@@ -174,7 +175,7 @@ python ../scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file li
 
 
 ```{}
-**Step 3** Cretae metadata
+**Step 4** Cretae metadata
 
 ```{}
 Path = "../Downloads/"
