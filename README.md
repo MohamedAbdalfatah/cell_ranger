@@ -10,9 +10,9 @@ Here we will check how to do the preprocession analysis of Cell Multiplexing dat
 
 1- Get lims **1-lims.sh** script
 
-2- Generate fastq path **2-write_fastq_paths.py** script 
+2- Copy files to accecable directory **copy_fastqs.sh** 
 
-3- Copy files to accecable directory **copy_fastqs.sh** 
+3- Generate fastq path **2-write_fastq_paths.py** script 
 
 4- Create metadata **Create_Metadata.R**
 
@@ -20,13 +20,18 @@ Here we will check how to do the preprocession analysis of Cell Multiplexing dat
 
 6- Create *config.csv* file **create_cmo_config.py**
 
+First I assume we are in **/home/groups/singlecell/mabdalfttah/projects**, we will need to create the subproject directory and jobs directory to save everything in those directories 
 
 ```{r}
 mkdir subproject
 mkdir subproject/jobs
 cd subproject
 ```
+
 **Step 1** LIMS information 
+
+In this step we are calling all of the information related to the subproject to use it in the next steps, the only differencess between this script and other scritis the name of generated file **"lims_info_"$1".txt"**, this will generate "lims_info_subproject.txt" instead of "lims_info.txt"
+
 ```{r}
 nano projects/scripts/1-lims.sh
 ```
@@ -48,8 +53,53 @@ chmod +x 1-lims.sh
 cp ../cellranger_mapping/feature_reference.csv .
 ```
 
-**Step 2** Write fastq files 
+**Step 2** Copy files to accecable directory
+This is very important to people don't have access to read the FASTQ files in proudaction team directory, this file is generating the original fastq path in proudaction and copy them to accecable directory you select it when you run the script. the script in **/scratch_isilon/groups/singlecell/shared/projects/copy_files/copy_fastqs.sh** and this is what it is contain:
+```{}
+#!/bin/bash
 
+# Step 1: Execute the 1-lims.sh script and save the output to lims_info.txt
+sh /scratch_isilon/groups/singlecell/shared/projects/copy_files/scripts/1-lims.sh "$1"
+
+# Step 2: Activate the desired conda environment
+source /scratch/groups/hheyn/software/anaconda3/bin/activate cellranger
+
+# Step 3: Run the 2-write_fastq_paths.py script and generate the fastq_paths.tab file
+python /scratch_isilon/groups/singlecell/shared/projects/copy_files/scripts/2-write_fastq_paths.py --info_file lims_${1}.txt --subproject "$1"
+
+# Step 3: Specify the target directory where you want to copy the files
+[ -w "$2" ] && echo "You have permission to target directory" || echo "You do not have permission to target directory"
+target_directory="$2"
+
+# Step 4: Check if fastq_paths.tab file exists and copy the files
+if [ -f "./fastq_paths.tab" ]; then
+    while IFS=$'\t' read -r -a fields; do
+        # Extract the path from the second column (index 1)
+        path=${fields[1]}
+
+        # Copy the file to the target directory using rsync
+        rsync -avL "$path" "$target_directory"
+    done < "./fastq_paths.tab"
+else
+    echo "fastq_paths.tab file not found."
+fi
+
+# Step 5: Change permissions of the target directory
+chmod g+rwx "$2"
+
+# Step 6: Deactivate conda env
+source /scratch/groups/hheyn/software/anaconda3/bin/deactivate
+```{}
+
+To run this script you just need to write this:
+```{}
+sh /scratch/devel/pnieto/scripts/mo_copy.sh DOLSORI_05 /scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir
+```{}
+**DOLSORI_05** here is the subproject and **/scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir** is the target directory to copy the files too 
+
+**Step 3** Generate fastq path 
+
+In this script we are get the 
 here there is some changes: 
 1- fastq_path = "/scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir" 
 change the path from pridaction which we don't have permession to fastq_dir which is we have permession
