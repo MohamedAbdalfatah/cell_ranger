@@ -4,7 +4,7 @@ In this Documentation I will update some script related to cell ranger falvours 
 
 ## Cell Multiplexing with cellranger multi
 
-Here we will check how to do the preprocession analysis of Cell Multiplexing data, which is you will have different samples in the same library, you can know more information from (here)[https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/multi]
+Here we will check how to do the preprocession analysis of Cell Multiplexing data, which is you will have different samples in the same library, you can know more information from (https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/multi)[here]
 # Steps 
 
 1- Get lims **1-lims.sh** script
