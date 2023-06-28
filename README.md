@@ -1,59 +1,24 @@
 # Cell ranger for no permession 
 
-## We have done:
-1- lims 
+In this Documentation I will update some script related to cell ranger falvours for people they doesn't have permession to the fastqs.
 
-2- fastq path
+## Cell Multiplexing with cellranger multi
 
-3- metadata
+Here we will check how to do the preprocession analysis of Cell Multiplexing data, which is you will have different samples in the same library, you can know more information from (here)[https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/multi]
+# Steps 
 
-4- copy fastqs and create directory of gem_id
+1- Get lims **1-lims.sh** script
 
-5- create cell ranger job
+2- Generate fastq path **2-write_fastq_paths.py** script 
 
-## We need to do:
+3- Copy files to accecable directory **copy_fastqs.sh** 
 
-1- Modify cellranger job to be multi and add config file:
-    a) cellranger multi comand done
-    
-    b) Sample (gem_id) done
-    
-    c) config_file.csv done
- 
+4- Create metadata **Create_Metadata.R**
 
-2- create confi file manually or by script (solved, check cretate_config.py script)
-Here all of what we need to put this:
+5- Copy fastqs and Create cell ranger job **3-cp_cell.py**
 
-[gene-expression]
+6- Create *config.csv* file **create_cmo_config.py**
 
-reference,/scratch/groups/singlecell/data/reference/refdata-gex-GRCh38-2020-A (No changed need)
-
-cmo-set,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/data/CMO_reference.csv (File avilable in Laura chat but we need to change the path)
-
-expect-cells,30000 (No changed need)
-chemistry,SC3Pv3 (No changed need)
-no-secondary,true (No changed need)
-no-bam,false (No changed need)
-[libraries] (Change the path of the fastq files, we have directory for CMO and cDNA)
-fastq_id,fastqs,feature_types 
-Plex5_2_CMO,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/subprojects/DOLSORI_05_06/jobs/Plex5_2/fastq/CMO,Multiplexing Capture
-Plex5_2,/scratch/devel/ljimenez/projects/DOLSORI/01_cellranger_mapping/subprojects/DOLSORI_05_06/jobs/Plex5_2/fastq/cDNA,Gene Expression
-
-[samples] (We need to write a script to generate this part, we can generate it from wetlab refernce )
-sample_id,cmo_ids
-1956028,CMO301
-1864260-181121,CMO302
-1853936,CMO303
-1864260-270521,CMO304
-VN00213,CMO305
-1893906,CMO307
-VN00264,CMO308
-
-3- understand the structure of the project 
-
-In this file I'm going to update the cellranger files for people dosn't have permession 
-
-4- Check the fasstq in limas (Problem of no such file or directory)
 
 ```{r}
 mkdir subproject
