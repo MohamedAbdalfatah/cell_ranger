@@ -196,7 +196,9 @@ for (i in seq_along(Files)) {
 write.csv(metadata[[1]],paste0("../Downloads/DOLSORI_05.csv"), row.names = F)
 ```
 
-**STEP 4** symlinks and Cellranger creation 
+**STEP 5** symlinks and Cellranger creation 
+
+This script is create the subdirectory for each gem_id, create  the symbolic links for fastqs for each gem_id and create the job file for multi cellranger , most important thing changed in this script is the job mode templet to run cell ranger to work with the new cluster which is this one **/scratch/groups/singlecell/software/cellranger/6.1.1/external/martian/jobmanagers/new_cluster/slurm.template**
 
 ```{r}
 # This script initializes the filesystem of this project:
@@ -295,16 +297,19 @@ def make_cellranger_nh(gem_id, jobscript_path, fastq_path, expected_cells):
 
 #SBATCH --time=23:00:00 # set a maximum time that the job will take HH:MM:SS (process will be terminated after this is reached)
 
-#SBATCH --cpus-per-task=1
-#SBATCH --partition=genB,main
 #SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
 #SBATCH --qos=normal
+#SBATCH --partition=genD
+#SBATCH --mem=32G
+
+echo [`date "+%Y-%m-%d %T"`] started job on $HOSTNAME
 
 export TENX_IGNORE_DEPRECATED_OS=1
 export HDF5_USE_FILE_LOCKING=FALSE
 
 
-{} multi --id {}  --jobmode /scratch/groups/hheyn/software/cellranger/6.1.1/external/martian/jobmanagers/slurm.template;
+{} multi --id {} --csv config.csv  --jobmode /scratch/groups/singlecell/software/cellranger/6.1.1/external/martian/jobmanagers/new_cluster/slurm.template;
 """.format(gem_id, cfg.cellranger_path, gem_id)
     job_script_file.write(job_script)
     job_script_file.close()
@@ -359,6 +364,22 @@ python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.
 ```
 
 **STEP 5** Create config file
+
+This is very important fro *Cell Multiplexing* and contains all of the information cellranger need to work, to create ths file we ned to have file like ths correlate the gem_ids we have with the CMOs in the library, the file should be looks like this:
+```{}
+subproject_folder,gem_id,GEX_library_name,CellPlex_library_name,sample_id,CMO_id
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1956028,CMO301
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1864260-181121,CMO302
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1853936,CMO303
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1864260-270521,CMO304
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,VN00213,CMO305
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1893906,CMO307
+DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,VN00264,CMO308
+DOLSORI_05_06,Plex5_2,Plex5_GEX_2,Plex5_CellPlex_2,1956028,CMO301
+DOLSORI_05_06,Plex5_2,Plex5_GEX_2,Plex5_CellPlex_2,1864260-181121,CMO302
+```
+
+The most important column is CMO_id, sample_id and gem_ids, for each experemnets wet lab people should share with you the information of CMO_ids and sample_ids and after that you can create this file to pass it to this script.
 
 ```{}
 #!/usr/bin/env python
@@ -431,9 +452,15 @@ with open(output_file_path, mode='w', newline='') as file:
 print('CSV file created successfully at {}'.format(output_file_path))
 ```
 
-Run the script
-it takes the CMO information and the gem_id and save the csv file as config.csv in the job directory 
+This script generate file called config.csv for each gm_id in it's subdirctory, it takes the CMO information and the gem_id and save the csv file as config.csv in the job directory. 
 
+**NOTE**: the config file should  contain CMO_refernce.csv file, this file is refernce of each CMO in any experements we have in our lab, since it is same for all experements we put it in the config file becouse cellranger will need it, you don't need to do anything just change the path of this file in the script to your path of the file. In my case it is here **/home/groups/singlecell/mabdalfttah/projects/data/CMO_reference.csv**
+in your case change just the path, but the file should be the same, please don't confuse beteen this fle and DOLSORI_05_06_CMO.csv which is should be uiqe for each experement and CMO_reference.csv is the same for all experements
+
+Run the script
+It takes gem_id adn CMO File
 ```{}
 python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
+
+Perfect
