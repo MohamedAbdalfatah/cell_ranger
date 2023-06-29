@@ -49,8 +49,8 @@ echo "Created LIMS information file: lims_info.txt"
 ```{r}
 chmod +x 1-lims.sh
 ./../scripts/1-lims.sh subproject
-# Copy the feature file
-cp ../cellranger_mapping/feature_reference.csv .
+# Remove any fail file in LanePassFail column 
+awk -F'\t' -v column="LanePassFail" 'BEGIN {OFS=FS} NR==1 {for (i=1; i<=NF; i++) if ($i == column) col=i} $col != "fail"' lims_info_DOLSORI_06.txt > tmp_file && mv tmp_file lims_info_DOLSORI_06.txt
 ```
 
 **Step 2** Copy files to accecable directory
