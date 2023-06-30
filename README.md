@@ -46,7 +46,7 @@ nano projects/scripts/1-lims.sh
 echo "Created LIMS information file: lims_info.txt"
 ```
 
-```{}
+```{r}
 chmod +x 1-lims.sh
 ./../scripts/1-lims.sh subproject
 # Remove any fail file in LanePassFail column 
@@ -57,7 +57,7 @@ awk -F'\t' -v column="LanePassFail" 'BEGIN {OFS=FS} NR==1 {for (i=1; i<=NF; i++)
 This is very important to people don't have access to read the FASTQ files in proudaction team directory, this file is generating the original fastq path in proudaction and copy them to accecable directory you select it when you run the script. the script in **/scratch_isilon/groups/singlecell/shared/projects/copy_files/copy_fastqs.sh** and this is what it is contain:
 
 
-```{}
+```{r}
 #!/bin/bash
 
 # Step 1: Execute the 1-lims.sh script and save the output to lims_info.txt
@@ -92,17 +92,12 @@ chmod g+rwx "$2"
 # Step 6: Deactivate conda env
 source /scratch/groups/hheyn/software/anaconda3/bin/deactivate
 
-```{}
+```
 
 To run this script you just need to write this:
-
-```{}
-
+```{r}
 sh /scratch/devel/pnieto/scripts/mo_copy.sh DOLSORI_05 /scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir
-
-```{}
-
-
+```
 **DOLSORI_05** here is the subproject and **/scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir** is the target directory to copy the files too 
 
 
@@ -184,8 +179,6 @@ To run this script you need to pass the lims info from **STEP1** and the subproj
 python ../scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
 ```
 
-
-```{}
 **Step 4** Cretae metadata
 
 ```{}
