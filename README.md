@@ -520,6 +520,7 @@ done
 The script takes two arguments: <destination_path> and <gem_id>. It creates a "reports" folder within the <destination_path>. It then iterates over sample folders in a specific source path "/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs". For each sample folder, it copies a file named "web_summary.html" to the "reports" folder, renaming it using the <gem_id> and the sample folder name. The script provides feedback by displaying the source and destination paths for each copied file. In summary, the script organizes and copies "web_summary.html" files from sample folders into a dedicated "reports" folder, with new filenames based on the provided <gem_id> and sample folder names.
 
 To run the script you need this:
+
 ```{}
 ./../scripts/cell_multiplex_scripts/5-copy_outputs.sh path_to_copy gem_id
 ```
