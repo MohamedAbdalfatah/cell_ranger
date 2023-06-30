@@ -369,7 +369,7 @@ make_cellranger_nh(gem_id, subproject_dir, fastq_dir_abs, 5000)
 python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
 ```
 
-**STEP 5** Create config file
+**STEP 6** Create config file
 
 This is very important fro *Cell Multiplexing* and contains all of the information cellranger need to work, to create ths file we ned to have file like ths correlate the gem_ids we have with the CMOs in the library, the file should be looks like this:
 
@@ -470,9 +470,10 @@ It takes gem_id adn CMO File
 python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
 
-Perfect
+**Step 7** copy outputs and reports 
 
 Now since we have cellmultiplexing for different plex and we have a samples in each plex, the out out of cellranger will be here "/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs", we need to copy the reports for each sample in each plex with the wet lab, so we can use this script:
+
 ```{}
 #!/bin/bash
 
