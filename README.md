@@ -294,12 +294,12 @@ def make_cellranger_nh(gem_id, jobscript_path, fastq_path, expected_cells):
 #SBATCH --job-name={}
 
 #SBATCH --mail-type=all        # send email when job begins, ends, or fails
-#SBATCH --mail-user=mohamed.abdalfttah@cnag.crg.eu
+#SBATCH --mail-user=mohamed.abdalfttah@cnag.eu
 
 #SBATCH --output=%x.slurm.%J.out        # define where our output and error from the job will be stored
 #SBATCH --error=%x.slurm.%J.err
 
-#SBATCH --time=23:00:00 # set a maximum time that the job will take HH:MM:SS (process will be terminated after this is reached)
+#SBATCH --time=11:00:00 # set a maximum time that the job will take HH:MM:SS (process will be terminated after this is reached)
 
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -370,6 +370,7 @@ python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.
 **STEP 5** Create config file
 
 This is very important fro *Cell Multiplexing* and contains all of the information cellranger need to work, to create ths file we ned to have file like ths correlate the gem_ids we have with the CMOs in the library, the file should be looks like this:
+
 ```{}
 subproject_folder,gem_id,GEX_library_name,CellPlex_library_name,sample_id,CMO_id
 DOLSORI_05_06,Plex5_1,Plex5_GEX_1,Plex5_CellPlex_1,1956028,CMO301
@@ -468,3 +469,44 @@ python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
 
 Perfect
+
+Now since we have cellmultiplexing for different plex and we have a samples in each plex, the out out of cellranger will be here "/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs", we need to copy the reports for each sample in each plex with the wet lab, so we can use this script:
+```{}
+#!/bin/bash
+
+# Check if the number of arguments is correct
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <destination_path> <gem_id>"
+    exit 1
+fi
+
+# Extract the arguments
+destination_dir=$1
+gem_id=$2
+
+# Create the "reports" folder in the destination path
+reports_dir="${destination_dir}/${gem_id}_reports"
+mkdir -p "$reports_dir"
+
+# Define the base source path
+base_source_path="/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs/"
+
+# Get a list of sample folders
+sample_folders=$(ls "$base_source_path")
+
+# Loop over each sample folder
+for sample in $sample_folders; do
+    # Define the source and destination paths for the current sample
+    source_path="${base_source_path}${sample}/web_summary.html"
+    new_filename="${gem_id}_${sample}_web_summary.html"
+    destination_path="${reports_dir}/${new_filename}"
+
+    # Copy the file
+    cp "$source_path" "$destination_path"
+
+    echo "Copied $source_path to $destination_path"
+done
+
+```
+
+The script takes two arguments: <destination_path> and <gem_id>. It creates a "reports" folder within the <destination_path>. It then iterates over sample folders in a specific source path "/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs". For each sample folder, it copies a file named "web_summary.html" to the "reports" folder, renaming it using the <gem_id> and the sample folder name. The script provides feedback by displaying the source and destination paths for each copied file. In summary, the script organizes and copies "web_summary.html" files from sample folders into a dedicated "reports" folder, with new filenames based on the provided <gem_id> and sample folder names.
