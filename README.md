@@ -35,7 +35,7 @@ cd subproject
 In this step we are calling all of the information related to the subproject to use it in the next steps, the only differencess between this script and other scritis the name of generated file **"lims_info_"$1".txt"**, this will generate "lims_info_subproject.txt" instead of "lims_info.txt"
 
 ```{r}
-nano projects/scripts/1-lims.sh
+nano projects/scripts/cell_multiplex_scripts/1-lims.sh
 ```
 
 ```{r}
@@ -43,14 +43,14 @@ nano projects/scripts/1-lims.sh
 
 # Get information for each library (flow cell, lane, sample id, etc.)
 # $1  needs to be the name of the project
-/home/groups/singlecell/mabdalfttah/projects/scripts/limsq.py -sp $1 | sed 's/;/\t/g' > "lims_info_"$1".txt"
+/home/groups/singlecell/mabdalfttah/projects/scripts/cell_multiplex_scripts/limsq.py -sp $1 | sed 's/;/\t/g' > "lims_info_"$1".txt"
 
 echo "Created LIMS information file: lims_info.txt"
 ```
 
 ```{r}
 chmod +x 1-lims.sh
-./../scripts/1-lims.sh subproject
+./../scripts/cell_multiplex_scripts/1-lims.sh subproject
 ```
 
 Reomve anything didn't pass the QC in LanePassFail
@@ -183,7 +183,7 @@ fastq_df.to_csv("fastq_paths.tab".format(subproject), header = True, index = Fal
 To run this script you need to pass the lims info from **STEP1** and the subproject
 
 ```{}
-python ../scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
+python ../scripts/cell_multiplex_scripts/2-write_fastq_paths.py --subproject  DOLSORI_05 --info_file lims_info_DOLSORI_05.txt
 ```
 
 **Step 4** Cretae metadata
@@ -371,7 +371,7 @@ make_cellranger_nh(gem_id, subproject_dir, fastq_dir_abs, 5000)
 ```
 
 ```{r}
-python ../scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
+python ../scripts/cell_multiplex_scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
 ```
 
 **STEP 6** Create config file
@@ -472,7 +472,7 @@ in your case change just the path, but the file should be the same, please don't
 Run the script
 It takes gem_id adn CMO File
 ```{}
-python ../scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
+python ../scripts/cell_multiplex_scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
 
 **Step 7** copy outputs and reports 
@@ -518,3 +518,8 @@ done
 ```
 
 The script takes two arguments: <destination_path> and <gem_id>. It creates a "reports" folder within the <destination_path>. It then iterates over sample folders in a specific source path "/home/groups/singlecell/mabdalfttah/projects/DOLSORI_05/jobs/${gem_id}/${gem_id}/outs/per_sample_outs". For each sample folder, it copies a file named "web_summary.html" to the "reports" folder, renaming it using the <gem_id> and the sample folder name. The script provides feedback by displaying the source and destination paths for each copied file. In summary, the script organizes and copies "web_summary.html" files from sample folders into a dedicated "reports" folder, with new filenames based on the provided <gem_id> and sample folder names.
+
+To run the script you need this:
+```{}
+./../scripts/cell_multiplex_scripts/5-copy_outputs.sh path_to_copy gem_id
+```
