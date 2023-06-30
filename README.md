@@ -98,9 +98,11 @@ To run this script you just need to write this:
 sh /scratch/devel/pnieto/scripts/mo_copy.sh DOLSORI_05 /scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir
 ```{}
 
+
 **DOLSORI_05** here is the subproject and **/scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir** is the target directory to copy the files too 
 
-**Step 3** Generate fastq path 
+
+**Step3** Generate fastq path 
 
 Perfect! since we have nowall FASTQs in **fastq_dir** now we will generate the FASTQ path pf the new directory for our subproject, we will use this path for next script to create symbolic link in jobs directory for each sample . Since we changed the structure of the path here there is some changes in the script, first we changed where is the fastqs and second we changed the structure of creationg the path, and that is it:
  
