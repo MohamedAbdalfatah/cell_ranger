@@ -20,7 +20,7 @@ Here we will check how to do the preprocession analysis of Cell Multiplexing dat
 
 6- Create *config.csv* file **create_cmo_config.py**
 
-7- Copy the reports of web_summary.html
+7- Copy the reports of **web_summary.html**
 
 First I assume we are in **/home/groups/singlecell/mabdalfttah/projects**, we will need to create the subproject directory and jobs directory to save everything in those directories 
 
