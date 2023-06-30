@@ -16,7 +16,7 @@ Here we will check how to do the preprocession analysis of Cell Multiplexing dat
 
 4- Create metadata **Create_Metadata.R**
 
-5- Copy fastqs and Create cell ranger job **3-cp_cell.py**
+5- Copy fastqs and Create cell ranger job **3-cellreanger_copyFastqs.py**
 
 6- Create *config.csv* file **create_cmo_config.py**
 
@@ -371,7 +371,7 @@ make_cellranger_nh(gem_id, subproject_dir, fastq_dir_abs, 5000)
 ```
 
 ```{r}
-python ../scripts/cell_multiplex_scripts/cp_cell.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
+python ../scripts/cell_multiplex_scripts/3-cellreanger_copyFastqs.py  --subproject DOLSORI_05 --fastq_paths fastq_paths.tab --metadata DOLSORI_05.csv --gem_id Plex6_1
 ```
 
 **STEP 6** Create config file
