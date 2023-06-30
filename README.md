@@ -18,7 +18,7 @@ Here we will check how to do the preprocession analysis of Cell Multiplexing dat
 
 5- Copy fastqs and Create cell ranger job **3-cellreanger_copyFastqs.py**
 
-6- Create *config.csv* file **create_cmo_config.py**
+6- Create *config.csv* file **4-create_cmo_config.py**
 
 7- Copy the reports of **web_summary.html**
 
@@ -472,7 +472,7 @@ in your case change just the path, but the file should be the same, please don't
 Run the script
 It takes gem_id adn CMO File
 ```{}
-python ../scripts/cell_multiplex_scripts/create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
+python ../scripts/cell_multiplex_scripts/4-create_cmo_config.py ../data/DOLSORI_05_06_CMO.csv Plex6_1
 ```
 
 **Step 7** copy outputs and reports 
