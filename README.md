@@ -46,7 +46,7 @@ nano projects/scripts/1-lims.sh
 echo "Created LIMS information file: lims_info.txt"
 ```
 
-```{r}
+```{}
 chmod +x 1-lims.sh
 ./../scripts/1-lims.sh subproject
 # Remove any fail file in LanePassFail column 
@@ -55,6 +55,7 @@ awk -F'\t' -v column="LanePassFail" 'BEGIN {OFS=FS} NR==1 {for (i=1; i<=NF; i++)
 
 **Step 2** Copy files to accecable directory
 This is very important to people don't have access to read the FASTQ files in proudaction team directory, this file is generating the original fastq path in proudaction and copy them to accecable directory you select it when you run the script. the script in **/scratch_isilon/groups/singlecell/shared/projects/copy_files/copy_fastqs.sh** and this is what it is contain:
+
 
 ```{}
 #!/bin/bash
@@ -90,12 +91,15 @@ chmod g+rwx "$2"
 
 # Step 6: Deactivate conda env
 source /scratch/groups/hheyn/software/anaconda3/bin/deactivate
+
 ```{}
 
 To run this script you just need to write this:
 
 ```{}
+
 sh /scratch/devel/pnieto/scripts/mo_copy.sh DOLSORI_05 /scratch_isilon/groups/singlecell/shared/projects/copy_files/fastq_dir
+
 ```{}
 
 
